@@ -10,6 +10,18 @@ app.get("/", function(req,res){
     res.sendFile(__dirname + "/index.html")
 })
 
+app.get("/bmicalculator",function (req,res) {
+    res.sendFile(__dirname + "/bmiCalculator.html")
+  })
+
+app.post("/bmicalculator", function (req,res) {
+    console.log(req.body)
+    const height  = Number(req.body.height)
+    const weight = Number(req.body.weight)
+    const bmi = weight/Math.pow(height,2)
+    res.send("The bmi for the values entered is = "+bmi)
+  })
+
 app.post("/", function(req,res){
     console.log(req.body)
     const num1 = Number(req.body.num1)
