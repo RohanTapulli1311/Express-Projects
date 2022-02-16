@@ -30,6 +30,12 @@ app.post("/", function(req,res){
     res.send("The sum of two numbers is = "+sum)
 })
 
+app.get("/family", function(req,res){
+  console.log(req.body)
+  
+})
+
+
 app.listen(4001,function(){
     console.log("server is listening to port 4001")
 })
