@@ -45,15 +45,13 @@ app.post("/family", function (req,res) {
    let fName = req.body.name
    let relation = ""
    if (fName in family){
-     console.log(fName+"1")
+     console.log("inside if")
     relation = family[fName]
+    res.send("The relation is = "+relation)
    }
    if(relation === ""){
-    console.log(fName)
+    console.log("inside second if")
      res.send("<h1>No relation</h1>")
-   }
-   else{
-    res.send("The relation is = "+relation)
    }
 
   })
