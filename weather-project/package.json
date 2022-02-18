@@ -1,0 +1,14 @@
+{
+  "name": "weather-project",
+  "version": "1.0.0",
+  "description": "Shows weather details using API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rohan Tapulli",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
