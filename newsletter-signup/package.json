@@ -1,0 +1,15 @@
+{
+  "name": "newsletter-signup",
+  "version": "1.0.0",
+  "description": "\u001b[A\u001b[Bsignup website using mailchimp api",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rohan Tapulli",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3"
+  }
+}
