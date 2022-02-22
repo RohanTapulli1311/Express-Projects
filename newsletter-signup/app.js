@@ -71,7 +71,7 @@ app.post("/", function(req,res){
 app.post("/failure", function (req,res) {
     res.redirect("/")
   })
-app.listen(3002, function(){
+app.listen(process.env.PORT || 3002, function(){
     console.log("server listening on port 3002")
 })
 
