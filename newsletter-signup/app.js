@@ -68,8 +68,8 @@ app.post("/", function(req,res){
     request.end()
 })
 
-app.get("/failure", function (req,res) {
-    res.sendFile(__dirname+"/signup.html")
+app.post("/failure", function (req,res) {
+    res.redirect("/")
   })
 app.listen(3002, function(){
     console.log("server listening on port 3002")
