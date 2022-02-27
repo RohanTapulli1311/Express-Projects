@@ -3,16 +3,23 @@ const bodyParser = require("body-parser")
 
 const app = express()
 
-app.use("view engine", "ejs")
+app.set("view engine", "ejs")
 app.get("/", function(req,res){
    const today = new Date()
+   dayList = ["monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+   dayType = ""
+   day = ""
    if(today.getDay() === 6|| today.getDay() === 7){
-       res.write("WOHOO! weekend time!")
+       dayType = "weekend"
+       day = dayList[today.getDay()]
    }
    else{
-       res.write("BOHOO! WORK TIME!")
+        dayType = "weekday"
+       day = dayList[today.getDay()]
+  
    }
-   res.send()
+   res.render("lists",{kindOfDay: day, type: dayType })
+ 
 })
 
 app.listen("3000", function(){
