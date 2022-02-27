@@ -7,21 +7,20 @@
     <title>TODOLIST</title>
 </head>
 <body>
-<% if(type === "weekend"){  %>  
-    
-    <h1 style="color: purple;">ITS A <%= type%> </h1>
-    <p style="color: purple;"><%= kindOfDay%> TODOLIST </p>
 
+<h1><%= kindOfDay %> </h1>
 
-<% } else{ %>
-    
-    <h1 style="color: orange;">ITS A <%= type%> </h1>
-    <p style="color: orange;"> <%= kindOfDay%> TODOLIST </p>
-<% }  %> 
+<ul>
+    <li>Buy food</li>
+    <li>Cook food</li>
+    <li>Eat food</li>
+    <li>remove food</li>
+</ul>
 
- 
-
-
+<form action="/" method="post">
+    <input type="text" name="newItem" placeholder="add to todolist">
+    <button type="submit">ADD</button> 
+</form>
     
 </body>
 </html>
