@@ -3,11 +3,9 @@
 <h1>Home</h1>
 <p><%= homeContent %></p>
 
-<h2>My Blogs:</h2>
-
 <% posts.forEach(function(post){ %>
  <% console.log(post.postTitle) %>
-    <h3><%= post.postTitle %></h3>
+    <h1><%= post.postTitle %></h1>
     <p><%= post.postBody %></p>
     <% }) %> 
 
