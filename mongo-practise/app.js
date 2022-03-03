@@ -1,51 +1,79 @@
-const MongoClient = require("mongodb").MongoClient
-const assert = require("assert");
-const { constants } = require("buffer");
+const mongoose = require("mongoose")
 
-const url = "mongodb://localhost:27017"
-const dbName = "fruitsDB"
-const client = new MongoClient(url);
+mongoose.connect("mongodb://localhost:27017/fruitsDB")
 
-client.connect(function (err) {
-    assert.equal(null,err)
-    console.log("connected successfully to server")
-    const db = client.db(dbName)
+const fruitSchema = new mongoose.Schema({
+    name: String,
+    rating: Number,
+    review: String
+})
 
-    findDocuments(db, function () {
-        client.close()
-      })
-    
+const Fruit = mongoose.model("Fruit", fruitSchema)
+
+const fruit = new Fruit({
+    name: "Apple",
+    rating: 5,
+    review: "Solid fruit out there"
+})
+
+//fruit.save()
+
+const personSchema = new mongoose.Schema({
+    name: String,
+    age: Number
+})
+
+const Person = mongoose.model("Person",personSchema)
+
+const person = new Person({
+    name: "John",
+    age: 37
+})
+
+//person.save()
+
+const mango = new Fruit({
+    name: "mango",
+    rating: 10,
+    review: "best fruit ever"
+})
+const banana = new Fruit({
+    name: "banana",
+    rating: 8,
+    review: "multi purpose"
+})
+
+const orange = new Fruit({
+    name: "orange",
+    rating: 7,
+    review: "sour taste"
+})
+
+// Fruit.insertMany([mango, banana, orange], function (err) {
+//     if(err){
+//         console.log(err)
+//     }
+//     else{
+//         console.log("successfully inserted")
+//     }
+//   })
+
+Fruit.find(function (err, fruits) {
+    if(err){
+        console.log(err)
+    }
+    else{
+        // console.log(fruits)
+        mongoose.connection.close()
+        fruits.forEach(function (fruit) {
+            console.log(fruit.name)
+          })
+    }
   })
 
-  const insertDocuments =function(db, callback){
-      const collection = db.collection("fruits")
-      collection.insertMany(
-          [
-              {
-                  name:"apple",
-                  Score:8,
-                  review:"great Fruit"
-              },
-              {
-                name:"Orange",
-                  Score:6,
-                  review:"sour Fruit"
-              },
-              { name:"Banana",
-              Score:9,
-              review:"greatest Fruit"
 
-              }
-          ],
-          function (err, result) {
-              assert.equal(err, null)
-             
-             
-              console.log("Inserted 3 documents into the collection")
-              callback(result)
-            }
-       )
-  }
+
+ 
 
   const findDocuments = function (db, callback) {
       const collection =db.collection("fruits")
