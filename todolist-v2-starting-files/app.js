@@ -2,7 +2,8 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const res = require("express/lib/response");
 
 const app = express();
 
@@ -28,23 +29,41 @@ const item3 = new Item({
   name: "cook food"
 })
 const item4 = new Item({
-  name: "eat food"
+  name: "remove food"
 })
 
-Item.insertMany([item1,item2,item3,item4], function (err) { 
-  if(err){
-    console.log(err)
-  }
-  else{
-    console.log("successfully added default items to database")
-  }
- } )
 
-app.get("/", function(req, res) {
 
 
 
-  res.render("list", {listTitle: "Today", newListItems: items});
+app.get("/", function(req, res) {
+  
+  Item.find({}, function(err, findItems){
+    if(err){
+      console.log(err)
+    }
+    else{
+      if(findItems.length === 0){
+        Item.insertMany([item1,item2,item3,item4], function (err) { 
+          if(err){
+            console.log(err)
+          }
+          else{
+            console.log("successfully added default items to database")
+          }
+         } )
+         res.redirect("/")
+      }
+      else{
+        res.render("list", {listTitle: "Today", newListItems: findItems});
+      }
+      //console.log(results)
+      
+    }
+  })
+
+
+ 
 
 });
 
@@ -52,16 +71,33 @@ app.get("/", function(req, res) {
 
 app.post("/", function(req, res){
 
-  const item = req.body.newItem;
+  const itemName = req.body.newItem;
 
   if (req.body.list === "Work") {
     workItems.push(item);
     res.redirect("/work");
   } else {
-    items.push(item);
+    const newItem = new Item({
+      name: itemName
+    })
+    newItem.save()
     res.redirect("/");
   }
 });
+app.post("/delete", function (req,res) {
+  const checkedItem =req.body.checkbox.split(" ").join("");   
+
+  Item.findByIdAndRemove(checkedItem, function (err) { 
+    if(!err){
+      console.log("Successfully deleted!")
+      res.redirect("/")
+    }
+    else{
+      console.log(err)
+    }
+   })
+res
+  })
 
 app.get("/work", function(req,res){
   res.render("list", {listTitle: "Work List", newListItems: workItems});
