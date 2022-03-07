@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const res = require("express/lib/response");
+const { application } = require("express");
 
 const app = express();
 
@@ -32,7 +33,11 @@ const item4 = new Item({
   name: "remove food"
 })
 
-
+const listSchema = new mongoose.Schema({
+  name: String,
+  items: [itemSchema]
+})
+const List = mongoose.model("list",listSchema)
 
 
 
@@ -66,6 +71,33 @@ app.get("/", function(req, res) {
  
 
 });
+
+app.get("/:customListName", function(req,res){
+  console.log(req.params.customListName)
+  const customListName = req.params.customListName
+  List.findOne({name:customListName}, function (err, foundlist) {
+    if(!err){
+      if(!foundlist){
+        console.log("doesnt exist!")
+        //create a new list here!
+        const list = new List({
+          name: customListName,
+          items : [item1,item2,item3]
+      
+        })
+        list.save()
+        res.redirect("/"+customListName)
+      }
+      else{
+        console.log("already exists!")
+        //show the existing list
+        res.render("list", {listTitle: foundlist.name, newListItems: foundlist.items} )
+      }
+    }
+
+    })
+ 
+})
 
 
 
