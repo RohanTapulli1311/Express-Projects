@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const res = require("express/lib/response");
 const { application } = require("express");
+const { cookie } = require("express/lib/response");
 
 const app = express();
 
@@ -104,18 +105,32 @@ app.get("/:customListName", function(req,res){
 app.post("/", function(req, res){
 
   const itemName = req.body.newItem;
-
-  if (req.body.list === "Work") {
-    workItems.push(item);
-    res.redirect("/work");
-  } else {
+  const listName = req.body.list.split(" ").join("");
+console.log(req.body)
     const newItem = new Item({
       name: itemName
     })
-    newItem.save()
+    if(listName === "Today"){
+      newItem.save()
     res.redirect("/");
-  }
-});
+    }
+    else{
+      console.log(listName)
+      List.findOne({name: listName}, function (err, foundList) { 
+        if(!err){
+        console.log(foundList)
+        foundList.items.push(newItem)
+        foundList.save()
+        res.redirect("/"+listName)
+        }
+        else{
+          console.log(err)
+        }
+   
+       })
+    }
+    
+  });
 app.post("/delete", function (req,res) {
   const checkedItem =req.body.checkbox.split(" ").join("");   
 
