@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const res = require("express/lib/response");
 const { application } = require("express");
 const { cookie } = require("express/lib/response");
+const _ = require("lodash")
 
 const app = express();
 
@@ -75,7 +76,7 @@ app.get("/", function(req, res) {
 
 app.get("/:customListName", function(req,res){
   console.log(req.params.customListName)
-  const customListName = req.params.customListName
+  const customListName = _.capitalize(req.params.customListName)
   List.findOne({name:customListName}, function (err, foundlist) {
     if(!err){
       if(!foundlist){
@@ -133,17 +134,31 @@ console.log(req.body)
   });
 app.post("/delete", function (req,res) {
   const checkedItem =req.body.checkbox.split(" ").join("");   
+  const listName = req.body.listName.split(" ").join("");
+  if(listName === "Today"){
+    Item.findByIdAndRemove(checkedItem, function (err) { 
+      if(!err){
+        console.log("Successfully deleted!")
+        res.redirect("/")
+      }
+      else{
+        console.log(err)
+      }
+     })
+  }
+  else{
+    List.findOneAndUpdate({name:listName},{$pull: {items: {_id:checkedItem}}},function(err,foundList){
+      if(!err){
+        console.log("Successfully deleted!")
+        res.redirect("/"+listName)
+      }
+      else{
+        console.log(err)
+      }
+    })
+  }
 
-  Item.findByIdAndRemove(checkedItem, function (err) { 
-    if(!err){
-      console.log("Successfully deleted!")
-      res.redirect("/")
-    }
-    else{
-      console.log(err)
-    }
-   })
-res
+
   })
 
 app.get("/work", function(req,res){
