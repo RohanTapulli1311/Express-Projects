@@ -13,7 +13,7 @@ const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui 
 const app = express();
 
 app.set('view engine', 'ejs');
-mongoose.connect("mongodb://localhost:27017/blogDB")
+mongoose.connect("mongodb+srv://admin-Rohan:test1234@cluster0.shkqb.mongodb.net/blogDB")
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
