@@ -17,7 +17,8 @@ const articleSchema = {
 
 const Article = mongoose.model("Article",articleSchema)
 
-app.get("/articles",function(req,res){
+app.route("/articles")
+.get(function(req,res){
     Article.find(function(err,foundArticles){
         if(err){
            // console.log(err)
@@ -29,9 +30,7 @@ app.get("/articles",function(req,res){
         }
     })
 })
-
-//POST
-app.post("/articles",function (req,res) {
+.post(function (req,res) {
     console.log(req.body.title)
     console.log(req.body.content)
 
@@ -47,19 +46,36 @@ app.post("/articles",function (req,res) {
             res.send("successfully added a new article")
         }
      })
-  })
-
-  app.delete("/articles",function (req,res) {
-      Article.deleteMany(function (err) {
-          if(err){
-              res.send(err)
-
-          }
-          else{
-              res.send("Successfully deleted all entries")
-          }
-        })
     })
+.delete(function (req,res) {
+    Article.deleteMany(function (err) {
+        if(err){
+            res.send(err)
+
+        }
+        else{
+            res.send("Successfully deleted all entries")
+        }
+      })
+});
+
+// route for specific article
+app.route("/articles/:articleTitle")
+.get(function(req,res){
+    title = req.params.articleTitle
+    Article.findOne({title:title},function(err,foundArticle){
+        if(err){
+            res.send("No articles matching the title was found")
+        }
+        else{
+            res.send(foundArticle)
+        }
+    })
+});
+
+
+
+
 
 app.listen(3000, function () { 
     console.log("server started on port 3000")
