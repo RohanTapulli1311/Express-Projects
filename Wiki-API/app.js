@@ -1,7 +1,8 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const ejs = require("ejs")
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { response } = require("express");
 
 const app = express();
 app.set("view-engine", "ejs")
@@ -71,7 +72,50 @@ app.route("/articles/:articleTitle")
             res.send(foundArticle)
         }
     })
-});
+})
+// doubt in put
+.put(function(req,res){
+    Article.updateOne(
+        {title: req.params.articleTitle},
+        {title: req.body.title, content:req.body.content},
+        {upsert: true},
+        function (err) {
+            if(!err){
+                res.send("successfully updated article.")
+            }
+            else{
+                res.send("error")
+            }
+          }
+    )
+})
+.patch(function(req,res){
+    Article.updateOne(
+        {title:req.params.articleTitle},
+        {$set:req.body},
+        function(err){
+            if(!err){
+                res.send("successfully updated the article(patch)")
+            }
+            else{
+                res.send(err)
+            }
+        }
+    )
+})
+.delete(function (req,res) {
+    Article.deleteOne(
+        {title:req.params.articleTitle},
+        function (err) {
+            if(!err){
+                res.send("Successfully deleted the article")
+            }
+            else{
+                res.send(err)
+            }
+          }
+    )
+  });
 
 
 
